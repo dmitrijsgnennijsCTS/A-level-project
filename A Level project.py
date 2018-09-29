@@ -10,19 +10,17 @@ Config.set('graphics', 'fullscreen', 'auto') # Fulscreen is enabled and will be 
 
 from kivy.core.window import Window # Import Window to get window size
 
-Window.clearcolor = ((.2*.75), (.72*.75) ,(.80*.75) ,1)
+Window.clearcolor = ((.2*.75), (.72*.75) ,(.80*.75) ,1) # Colour of the window
 
 
 class MyApp(App):
 	def build(self):
-		print(Window.size[0])
-
 		fl = FloatLayout()
 
 		fl.add_widget( Button(text = "Settings",
-		 	size_hint = [(1/3),.1],
+		 	size_hint = [(1/3),.1], # Hint for the butttons size
 		 	on_press = self.Settings_Button,
-		 	background_color = [.5, 0, 0, 1],
+		 	background_color = [.5, 0, 0, 1], #Colour of the button in percentage of RGB
 			background_normal = '',
 		 	pos_hint = {'x': (2/3), 'center_y': .95})) # Relative position of the button in any resolution
 
@@ -56,13 +54,13 @@ class MyApp(App):
 
 	def Lane_Assist_Button(self, instance):
 		print("Lane Assist pressed")
-		if instance.text == "Lane Assist : OFF":
-			instance.text = "Lane Assist : ON"
+		if instance.text == "Lane Assist : OFF": # Check text of button
+			instance.text = "Lane Assist : ON" # Change text of a button
 		else:
 			instance.text = "Lane Assist : OFF"
+
 
 if __name__ == "__main__": # Check the name, if not a daughter program then run
 	MyApp().run() # Run the class
 
 
-## git command line
