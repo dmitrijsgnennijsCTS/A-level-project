@@ -18,3 +18,6 @@ class MyApp(App):
 
 if __name__ == "__main__": # Check the name, if not a daughter program then run
 	MyApp().run() # Run the class
+
+
+## git command line
