@@ -10,24 +10,37 @@ Config.set('graphics', 'fullscreen', 'auto') # Fulscreen is enabled and will be 
 
 from kivy.core.window import Window # Import Window to get window size
 
+Window.clearcolor = ((.2*.75), (.72*.75) ,(.80*.75) ,1)
+
+
 class MyApp(App):
 	def build(self):
+		print(Window.size[0])
+
 		fl = FloatLayout()
 
 		fl.add_widget( Button(text = "Settings",
 		 	size_hint = [(1/3),.1],
 		 	on_press = self.Settings_Button,
-		 	pos = ((int(Window.size[0])-(int(Window.size[0])*(1/3))), (int(Window.size[1])-(int(Window.size[1])*(.1)))))) # Relative position of the button in any resolution
+		 	background_color = [.5, 0, 0, 1],
+			background_normal = '',
+		 	pos_hint = {'x': (2/3), 'center_y': .95})) # Relative position of the button in any resolution
+
+		#fl.add_widget(Button (text = 'test', size_hint = (.100, .100), pos_hint = {'x': .5, 'center_y': .5})) #Test button
 
 		fl.add_widget( Button(text = "Cruise Control : OFF",
 		 	size_hint = [.5,.1],
 		 	on_press = self.Cruise_Control_Button,
-		 	pos = (0,0)))
+		 	background_color = [.5, 0, 0, 1],
+			background_normal = '',
+		 	pos_hint = {'x': 0, 'center_y': .05}))
 
 		fl.add_widget( Button(text = "Lane Assist : OFF",
 			size_hint = [.5,.1],
 			on_press = self.Lane_Assist_Button,
-		  	pos = (((int(Window.size[0])*.5), 0))))
+			background_color = [.5, 0, 0, 1],
+			background_normal = '',
+		  	pos_hint = {'x': .5, 'center_y': .05}))
 
 		return fl
 
