@@ -13,14 +13,40 @@ from kivy.core.window import Window # Import Window to get window size
 class MyApp(App):
 	def build(self):
 		fl = FloatLayout()
-		fl.add_widget( Button(text = "Settings", size_hint = [.5,.1], pos = (200, 200)) )
-		fl.add_widget( Button(text = "Cruise Control : OFF", size_hint = [.5,.1], pos = (200, 400)) )
-		fl.add_widget( Button(text = "Lane Assist : OFF", size_hint = [.5,.1], pos = (200, 600)) )
 
-		print(str(Window.size[1]), str(Window.size[0])) # Gets the size of the display in pixels
-		#return Button(text = "button1", size_hint = [.5,.1], pos = (int(Window.size[1]*.125), 0)) # Button that has relative size and position
+		fl.add_widget( Button(text = "Settings",
+		 	size_hint = [(1/3),.1],
+		 	on_press = self.Settings_Button,
+		 	pos = ((int(Window.size[0])-(int(Window.size[0])*(1/3))), (int(Window.size[1])-(int(Window.size[1])*(.1)))))) # Relative position of the button in any resolution
+
+		fl.add_widget( Button(text = "Cruise Control : OFF",
+		 	size_hint = [.5,.1],
+		 	on_press = self.Cruise_Control_Button,
+		 	pos = (0,0)))
+
+		fl.add_widget( Button(text = "Lane Assist : OFF",
+			size_hint = [.5,.1],
+			on_press = self.Lane_Assist_Button,
+		  	pos = (((int(Window.size[0])*.5), 0))))
 
 		return fl
+
+	def Settings_Button(self, instance):
+		print("Settings pressed")
+
+	def Cruise_Control_Button(self, instance):
+		print("Cruise Control pressed")
+		if instance.text == "Cruise Control : OFF":
+			instance.text = "Cruise Control : ON"
+		else:
+			instance.text = "Cruise Control : OFF"
+
+	def Lane_Assist_Button(self, instance):
+		print("Lane Assist pressed")
+		if instance.text == "Lane Assist : OFF":
+			instance.text = "Lane Assist : ON"
+		else:
+			instance.text = "Lane Assist : OFF"
 
 if __name__ == "__main__": # Check the name, if not a daughter program then run
 	MyApp().run() # Run the class
