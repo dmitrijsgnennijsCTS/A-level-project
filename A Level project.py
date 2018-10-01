@@ -7,6 +7,8 @@ from kivy.config import Config # Import config to configure setting
 
 Config.set('kivy', 'exit_on_escape', '1') # When exit key pressed then close the program
 Config.set('graphics', 'fullscreen', 'auto') # Fulscreen is enabled and will be auto. So will be set to display res
+Config.set("graphics", "show_cursor", '1')
+
 
 from kivy.core.window import Window # Import Window to get window size
 
