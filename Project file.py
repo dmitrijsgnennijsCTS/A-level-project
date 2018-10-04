@@ -38,7 +38,7 @@ class MainScreen(Screen, FloatLayout):
     pass
 
 class SettingsScreen(Screen, FloatLayout):
-	pass
+    pass
 
 class ScreenManagement(ScreenManager):
 	pass
