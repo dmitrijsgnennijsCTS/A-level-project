@@ -7,6 +7,7 @@ ScreenManagement:
 	SettingsScreen:
 
 <MainScreen>:
+	lbl: my_btn
 	name: "main"
 
 	Button:
@@ -14,10 +15,11 @@ ScreenManagement:
 		size_hint: (1/3), .1
 		pos_hint: {'x': (2/3), 'center_y': .95}
 		on_release: app.root.current = "settings"
-		on_press: root.Settings_Button()
+		on_press: print(args)
 
 	Button:
-		text: "Cruise Control : OFF"
+		id: my_btn
+		text: "ye"
 		size_hint: [.5,.1]
 		pos_hint: {'x': 0, 'center_y': .05}
 		on_press: root.Cruise_Control_Button()

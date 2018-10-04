@@ -24,6 +24,8 @@ class MainScreen(Screen, FloatLayout):
 
 	def Cruise_Control_Button(self):
 		print("Cruise Control pressed")
+		self.lbl.text = "Works"
+
 
 
 	def Lane_Assist_Button(self):
