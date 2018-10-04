@@ -17,6 +17,18 @@ from kivy.core.window import Window # Import Window to get window size
 Window.clearcolor = ((.2*.75), (.72*.75) ,(.80*.75) ,1) # Colour of the window
 
 class MainScreen(Screen, FloatLayout):
+
+	def Settings_Button(self):
+		print("Settings pressed")
+
+
+	def Cruise_Control_Button(self):
+		print("Cruise Control pressed")
+
+
+	def Lane_Assist_Button(self):
+		print("Lane Assist pressed")
+
 	pass
 
 class SettingsScreen(Screen):
