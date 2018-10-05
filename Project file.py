@@ -24,6 +24,7 @@ class MainScreen(Screen, FloatLayout):
     def Cruise_Control_Button(self):
 	#print("Cruise Control pressed")   
         if self.btn_c.text == "Cruise Control: Off":
+            print(self.width)
             self.btn_c.text = ("Cruise Control: On")
         else:
             self.btn_c.text = ("Cruise Control: Off")
