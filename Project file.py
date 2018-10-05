@@ -3,6 +3,8 @@ from kivy.app import App # Import the app to run the code and create window
 from kivy.uix.floatlayout import FloatLayout # Import the ability of putting widgets in any place on the window
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition # Import the ability to create multiple screens and anything related
 
+from kivy.uix.widget import Widget
+
 from kivy.lang import Builder
 
 from kivy.config import Config # Import config to configure setting
@@ -32,8 +34,7 @@ class MainScreen(Screen, FloatLayout):
              self.btn_l.text = ("Lane Assist : On")
         else:
             self.btn_l.text = ("Lane Assist : Off")
-
-            
+     
     pass
 
 class SettingsScreen(Screen, FloatLayout):
@@ -77,8 +78,13 @@ class SettingsScreen(Screen, FloatLayout):
         
     pass
 
+
 class ScreenManagement(ScreenManager):
 	pass
+
+class MyWidget(Widget):
+    pass
+
 
 gui = Builder.load_file('projectfile.kv')
 
