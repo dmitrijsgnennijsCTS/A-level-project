@@ -1,7 +1,7 @@
 from kivy.app import App # Import the app to run the code and create window
 
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
+from kivy.uix.floatlayout import FloatLayout # Import the ability of putting widgets in any place on the window
+from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition # Import the ability to create multiple screens and anything related
 
 from kivy.lang import Builder
 
@@ -9,7 +9,7 @@ from kivy.config import Config # Import config to configure setting
 
 Config.set('kivy', 'exit_on_escape', '1') # When exit key pressed then close the program
 Config.set('graphics', 'fullscreen', 'auto') # Fulscreen is enabled and will be auto. So will be set to display res
-Config.set("graphics", "show_cursor", '1')
+Config.set("graphics", "show_cursor", '1') # Allow the cursor to be shown on the display when the program is running.
 
 
 from kivy.core.window import Window # Import Window to get window size
@@ -22,8 +22,7 @@ class MainScreen(Screen, FloatLayout):
 
 
     def Cruise_Control_Button(self):
-		#print("Cruise Control pressed")
-                
+	#print("Cruise Control pressed")   
         if self.btn_c.text == "Cruise Control: Off":
             self.btn_c.text = ("Cruise Control: On")
         else:

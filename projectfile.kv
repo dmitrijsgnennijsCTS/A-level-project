@@ -8,26 +8,30 @@ ScreenManagement:
 <MainScreen>:
 	btn_l: btn_lane
 	btn_c: btn_cruise
+	btn_s: btn_settings
+
 	name: "main"
 
 	Button:
+		id: btn_settings
 		text: "Settings"
 		size_hint: (1/3), .1
 		pos_hint: {'x': (2/3), 'center_y': .95}
 		on_release: 
 			app.root.current = "settings"
 			root.manager.transition.direction = 'left'
+			root.Settings_Button()
 
 			
 
-	Button:
+	ToggleButton:
 		id: btn_cruise
 		text: "Cruise Control: Off"
 		size_hint: [.5,.1]
 		pos_hint: {'x': 0, 'center_y': .05}
 		on_press: root.Cruise_Control_Button()
 
-	Button:
+	ToggleButton:
 		id: btn_lane
 		text: "Lane Assist : Off"
 		size_hint: [.5,.1]
@@ -37,6 +41,7 @@ ScreenManagement:
 
 <SettingsScreen>:
 	name: "settings"
+
 	Button:
 		on_release: 
 			app.root.current = "main"
@@ -46,29 +51,61 @@ ScreenManagement:
 		size_hint: [.25,.1]
 		pos_hint: {'x': .75, 'center_y': .95}
 
-	Button:
-		text: "Speed Unit: MPH"
-		size_hint: [(1/3),.1]
+
+	Label:
+		text: "Speed unit:"
 		pos_hint: {'x': .05, 'center_y': .8}
+		size_hint: [(1/3),.1]
+		font_size: 40
 
 	Button:
-		text: "Show Pedestrians: Off"
-		size_hint: [(1/3),.1]
+		text: "Mph"
+		size_hint: [.1,.1]
+		pos_hint: {'x': .45, 'center_y': .8}
+
+
+	Label:
+		text: "Show Pedestrians"
 		pos_hint: {'x': .05, 'center_y': .65}
-
-
-	Button:
-		text: "Distance units: Meters"
 		size_hint: [(1/3),.1]
+
+	ToggleButton:
+		text: "Off"
+		size_hint: [.1,.1]
+		pos_hint: {'x': .45, 'center_y': .65}
+
+
+	Label:
+		text: "Distance Units"
 		pos_hint: {'x': .05, 'center_y': .5}
+		size_hint: [(1/3),.1]
 
 	Button:
-		text: "Distance to car in front: Off"
-		size_hint: [(1/3),.1]
+		text: "Meters"
+		size_hint: [.1,.1]
+		pos_hint: {'x': .45, 'center_y': .5}
+
+
+	Label:
+		text: "Distance to car in front"
 		pos_hint: {'x': .05, 'center_y': .35}
-
-	Button:
-		text: "Speed of car in front: Off"
 		size_hint: [(1/3),.1]
+
+	ToggleButton:
+		text: "Off"
+		size_hint: [.1,.1]
+		pos_hint: {'x': .45, 'center_y': .35}
+
+
+	Label:
+		text: "Speed of Car in front"
 		pos_hint: {'x': .05, 'center_y': .2}
+		size_hint: [(1/3),.1]
+
+	ToggleButton:
+		text: "Off"
+		size_hint: [.1,.1]
+		pos_hint: {'x': .45, 'center_y': .2}
+
+
 		
