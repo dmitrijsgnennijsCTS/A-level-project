@@ -2,7 +2,6 @@
 #: import SlideTransition kivy.uix.screenmanager.SlideTransition
 
 ScreenManagement:
-	transition: SlideTransition()
 	MainScreen:
 	SettingsScreen:
 
@@ -15,7 +14,9 @@ ScreenManagement:
 		text: "Settings"
 		size_hint: (1/3), .1
 		pos_hint: {'x': (2/3), 'center_y': .95}
-		on_release: app.root.current = "settings"
+		on_release: 
+			app.root.current = "settings"
+			root.manager.transition.direction = 'left'
 
 			
 
@@ -37,7 +38,10 @@ ScreenManagement:
 <SettingsScreen>:
 	name: "settings"
 	Button:
-		on_release: app.root.current = "main"
+		on_release: 
+			app.root.current = "main"
+			root.manager.transition.direction = 'right'
+
 		text: "Back"
 		size_hint: [.25,.1]
 		pos_hint: {'x': .75, 'center_y': .95}
