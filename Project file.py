@@ -38,6 +38,16 @@ class MainScreen(Screen, FloatLayout):
     pass
 
 class SettingsScreen(Screen, FloatLayout):
+    def Speed_Units(self):
+        print("Speed unit button pressed")
+    def Pedestrians(self):
+        print("Pedestrian button pressed")
+    def Distance_Units(self):
+        print("Distance units button pressed")
+    def Distance_ToCar(self):
+        print("Distance to car button pressed")
+    def Car_Speed(self):
+        print("Speed of car in front button pressed")
     pass
 
 class ScreenManagement(ScreenManager):
