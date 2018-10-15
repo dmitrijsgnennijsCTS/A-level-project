@@ -1,31 +1,39 @@
 # File name: Project File.py
-#: import FadeTransition kivy.uix.screenmanager.FadeTransition
+#: import SlideTransition kivy.uix.screenmanager.SlideTransition
 
 ScreenManagement:
-	transition: FadeTransition()
 	MainScreen:
 	SettingsScreen:
 
 <MainScreen>:
-	lbl: my_btn
+	btn_l: btn_lane
+	btn_c: btn_cruise
+	btn_s: btn_settings
+
 	name: "main"
 
 	Button:
+		id: btn_settings
 		text: "Settings"
 		size_hint: (1/3), .1
 		pos_hint: {'x': (2/3), 'center_y': .95}
-		on_release: app.root.current = "settings"
-		on_press: print(args)
+		on_release: 
+			app.root.current = "settings"
+			root.manager.transition.direction = 'left'
+			root.Settings_Button()
 
-	Button:
-		id: my_btn
-		text: "ye"
+			
+
+	ToggleButton:
+		id: btn_cruise
+		text: "Cruise Control: Off"
 		size_hint: [.5,.1]
 		pos_hint: {'x': 0, 'center_y': .05}
 		on_press: root.Cruise_Control_Button()
 
-	Button:
-		text: "Lane Assist : OFF"
+	ToggleButton:
+		id: btn_lane
+		text: "Lane Assist : Off"
 		size_hint: [.5,.1]
 		pos_hint: {'x': .5, 'center_y': .05}
 		on_press: root.Lane_Assist_Button()
@@ -33,6 +41,94 @@ ScreenManagement:
 
 <SettingsScreen>:
 	name: "settings"
+
 	Button:
-		on_release: app.root.current = "main"
+		on_release: 
+			app.root.current = "main"
+			root.manager.transition.direction = 'right'
+
 		text: "Back"
+		size_hint: [.25,.1]
+		pos_hint: {'x': .75, 'center_y': .95}
+
+
+	Label:
+		text: "Speed unit:"
+		pos_hint: {'x': .05, 'center_y': .8}
+		size_hint: [.2, .1]
+		font_size: (self.width/8)
+		outline_color: (0,0,0,1)
+		outline_width: 1
+
+	Button:
+		id: btn_speed
+		text: "Mph"
+		size_hint: [.1, .1]
+		pos_hint: {'x': .45, 'center_y': .8}
+
+
+	Label:
+		text: "Show Pedestrians"
+		pos_hint: {'x': .05, 'center_y': .65}
+		size_hint: [.2, .1]
+		font_size: (self.width/8)
+		outline_color: (0,0,0,1)
+		outline_width: 1
+
+
+	ToggleButton:
+		id: btn_pedestrians
+		text: "Off"
+		size_hint: [.1, .1]
+		pos_hint: {'x': .45, 'center_y': .65}
+
+
+	Label:
+		text: "Distance Units"
+		pos_hint: {'x': .05, 'center_y': .5}
+		size_hint: [.2, .1]
+		font_size: (self.width/8)
+		outline_color: (0,0,0,1)
+		outline_width: 1
+
+
+	Button:
+		id: btn_dunit
+		text: "Meters"
+		size_hint: [.1, .1]
+		pos_hint: {'x': .45, 'center_y': .5}
+
+
+	Label:
+		text: "Distance to car in front"
+		pos_hint: {'x': .05, 'center_y': .35}
+		size_hint: [.2, .1]
+		font_size: (self.width/8)
+		outline_color: (0,0,0,1)
+		outline_width: 1
+
+
+	ToggleButton:
+		id: btn_cardis
+		text: "Off"
+		size_hint: [.1, .1]
+		pos_hint: {'x': .45, 'center_y': .35}
+
+
+	Label:
+		text: "Speed of Car in front"
+		pos_hint: {'x': .05, 'center_y': .2}
+		size_hint: [.2, .1]
+		font_size: (self.width/8)
+		outline_color: (0,0,0,1)
+		outline_width: 1
+
+
+	ToggleButton:
+		id: btn_speedcar
+		text: "Off"
+		size_hint: [.1,.1]
+		pos_hint: {'x': .45, 'center_y': .2}
+
+
+		
