@@ -59,6 +59,8 @@ ScreenManagement:
 		font_size: (self.width/8)
 		outline_color: (0,0,0,1)
 		outline_width: 1
+		text_size: self.size
+		halign: 'left'
 
 	Button:
 		id: btn_speed
@@ -74,6 +76,8 @@ ScreenManagement:
 		font_size: (self.width/8)
 		outline_color: (0,0,0,1)
 		outline_width: 1
+		text_size: self.size
+		halign: 'left'
 
 
 	ToggleButton:
@@ -90,6 +94,8 @@ ScreenManagement:
 		font_size: (self.width/8)
 		outline_color: (0,0,0,1)
 		outline_width: 1
+		text_size: self.size
+		halign: 'left'
 
 
 	Button:
@@ -106,6 +112,8 @@ ScreenManagement:
 		font_size: (self.width/8)
 		outline_color: (0,0,0,1)
 		outline_width: 1
+		text_size: self.size
+		halign: 'left'
 
 
 	ToggleButton:
@@ -118,10 +126,13 @@ ScreenManagement:
 	Label:
 		text: "Speed of Car in front"
 		pos_hint: {'x': .05, 'center_y': .2}
-		size_hint: [.2, .1]
-		font_size: (self.width/8)
+		size_hint: [.3, .1]
+		font_size: (self.height*0.5)
 		outline_color: (0,0,0,1)
 		outline_width: 1
+		text_size: self.size
+		halign: 'left'
+
 
 
 	ToggleButton:
