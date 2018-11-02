@@ -38,12 +38,12 @@ ScreenManagement:
 		on_press: root.Lane_Assist_Button()
 	
 
-	Camera:
-		id: camera	
-		resolution: (256, 144)
-		play: True
-		size_hint: [.5,.5]
-		pos_hint: {'x': .25, 'center_y': .25}
+	BoxLayout:
+		orientation: 'vertical'
+		Camera:
+			id: camera	
+			resolution: (256, 144)
+			play: False
 			
 
 
