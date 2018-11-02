@@ -38,11 +38,12 @@ ScreenManagement:
 		on_press: root.Lane_Assist_Button()
 	
 
-	MyWidget:
-		Label:
-			text: "hello"
-			size_hint: [.25,.5]
-			pos_hint: {'x': .25, 'center_y': .25}
+	BoxLayout:
+		size_hint: [.85, .85]
+		pos_hint: {'x': .25, 'center_y': .25}
+		Image:
+			id: source_image
+			source: "img.jpeg"
 
 
 <SettingsScreen>:
