@@ -39,11 +39,11 @@ ScreenManagement:
 	
 
 	BoxLayout:
-		size_hint: [.5,.5]
-		pos_hint: {'x': .25, 'center_y': .5}
-		Image:
-			id: source_image
-			source: "img.jpg"
+		orientation: 'vertical'
+		Camera:
+			id: camera	
+			resolution: (256, 144)
+			play: True
 			
 
 
