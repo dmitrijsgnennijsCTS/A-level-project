@@ -11,6 +11,7 @@ from kivy.lang import Builder
 from kivy.config import Config # Import config to configure setting
 import numpy as np
 import cv2
+import PIL
 from kivy.uix.image import Image
 from kivy.core.image import Image as CoreImage
 from kivy.clock import Clock
@@ -93,27 +94,26 @@ class MyWidget(Widget):
 
 class CameraCapture(Image):
     def __init__(self, capture, fps, **kwargs):
-        super(CameraCapture, self).__init__(**kwargs)
-        self.capture = capture
-        Clock.schedule_interval(self.update, 1.0 / fps)
+    	super(CameraCapture, self).__init__(**kwargs)
+    	self.capture = capture
+    	Clock.schedule_interval(self.update, 1.0 / fps)
 
     def update(self, dt):
-        ret, frame = self.capture.read()
-        #print(frame)
-        frame = np.rot90(np.swapaxes(frame, 0, 1))
-        #print(frame)
-        video = Texture.create(size = (frame.shape[1], frame.shape[0]), colorfmt = 'rgb')
-        video = video.blit_buffer(frame.tostring(),colorfmt = 'bgr', bufferfmt = 'ubyte')
-        cv2.imwrite('image.jpg', video)
-        self.img = video
+    	ret, frame = self.capture.read()
+    	#print(frame)
+    	imag = PIL.Image.fromarray(frame)
+    	imag.save('out.png')
+    	self.source = 'image.png'
+
 
 gui = Builder.load_file('projectfile.kv')
 
 class MainApp(App):
     def build(self):
-        self.capture = cv2.VideoCapture(0)
-        self.my_camera = CameraCapture(capture = self.capture, fps = 0.1)
-        return gui
+    	root = self.root
+    	self.capture = cv2.VideoCapture(0)
+    	self.my_camera = CameraCapture(capture = self.capture, fps = 0.1)
+    	return gui
 
     def on_stop(self):
         self.capture.release()
