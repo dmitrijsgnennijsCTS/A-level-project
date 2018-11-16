@@ -1,5 +1,6 @@
 # File name: Project File.py
 #: import SlideTransition kivy.uix.screenmanager.SlideTransition
+#: import os os
 
 ScreenManagement:
 	MainScreen:
@@ -9,7 +10,6 @@ ScreenManagement:
 	btn_l: btn_lane
 	btn_c: btn_cruise
 	btn_s: btn_settings
-
 	name: "main"
 
 	Button:
@@ -20,8 +20,6 @@ ScreenManagement:
 		on_release: 
 			app.root.current = "settings"
 			root.manager.transition.direction = 'left'
-
-			
 
 	ToggleButton:
 		id: btn_cruise
@@ -38,7 +36,9 @@ ScreenManagement:
 		on_press: root.Lane_Assist_Button()
 	
 	Image:
-		pos_hint: {'x':.125, 'center_y':.5}
+		id: img
+		size_hint: [.75,.75]
+		pos_hint: {'x':.125, 'y':.125}
 		source: root.source
 
 
