@@ -13,8 +13,6 @@ import PIL
 from kivy.uix.image import Image
 from kivy.clock import Clock
 
-from os.path import join, exists
-import os
 
 Config.set('kivy', 'exit_on_escape', '1') # When exit key pressed then close the program
 Config.set('graphics', 'fullscreen', 'auto') # Fulscreen is enabled and will be auto. So will be set to display res
@@ -26,21 +24,33 @@ from kivy.core.window import Window # Import Window to get window size
 Window.clearcolor = ((.2*.75), (.72*.75) ,(.80*.75) ,1) # Colour of the window
 
 class MainScreen(Screen, FloatLayout):
-	def __init__(self, **kwargs):
-		super(MainScreen, self).__init__(**kwargs)
-		self.source ='img.jpg'
-	# def __init__(self, capture, fps, **kwargs): #Error whilst running here
-	# 	print("here 2")
+	# def __init__(self, **kwargs):
 	# 	super(MainScreen, self).__init__(**kwargs)
-	# 	self.capture = capture
-	# 	Clock.schedule_interval(self.update, 1.0 / fps)
+	# 	self.source ='img.jpg'
+	def __init__(self, **kwargs):
+		#print("here 2")
+		super(MainScreen, self).__init__(**kwargs)
+		self.capture = cv2.VideoCapture(0)
+		self.source = 'img.jpg'
+		Clock.schedule_interval(self.update, 1.0 / 1) # <--- If fps change is required
 
-	# def update(self, dt):
-	# 	ret, frame = self.capture.read()
-	# 	#print(frame)
-	# 	imag = PIL.Image.fromarray(frame)
-	# 	imag.save('out.png')
-	# 	self.source = 'img.jpg'
+	def update(self, dt):
+		ret, frame = self.capture.read()
+		print(frame)
+		print(ret)
+		self.ids.img.source = 'img2.jpg'
+		# if ret == True:
+		# 	print("I'm getting here")
+		# 	self.source = PIL.Image.fromarray(frame)
+		# else:
+		# 	print("here again")
+		# 	self.source = 'img.jpg'
+		# 	print("------------------No feed------------------")
+		# imag.save('out.png')
+		# self.source = 'img.jpg'
+
+	def on_stop(self):
+		self.capture.release()
 
 	def Cruise_Control_Button(self):
 		if self.btn_c.text == "Cruise Control: Off":
@@ -121,7 +131,8 @@ gui = Builder.load_file('projectfile.kv')
 
 class MainApp(App):
     def build(self):
-    	#self.capture = cv2.VideoCapture(0)
+    	# self.capture = cv2.VideoCapture(0)
+    	# MainScreen(capture=self.capture, fps=30)
     	return gui
 
     # def on_stop(self):
