@@ -27,22 +27,15 @@ Window.clearcolor = ((.2*.75), (.72*.75) ,(.80*.75) ,1) # Colour of the window
 class MainScreen(Screen, FloatLayout):
 	def __init__(self, **kwargs):
 		super(MainScreen, self).__init__(**kwargs)
-		self.capture = cv2.VideoCapture(0)
-		self.source = 'img.jpg'
-		Clock.schedule_interval(self.update, 1.0 / 1) # <--- If fps change is required
+		self.capture = cv2.VideoCapture(0) # captures the data from the camera with index 0 (primary)
+		Clock.schedule_interval(self.update, 1.0 / 30) # <--- If fps change is required/ Also code used for updating the frame
 
 	def update(self, dt):
-		ret, frame = self.capture.read()
-		frame = PIL.Image.fromarray(frame)
-		frame.save('frame.jpg')
-		self.ids.img.source = 'frame.jpg'
+		ret, frame = self.capture.read() # reads the cv2 output from the camera
+		frame = PIL.Image.fromarray(frame) # using pillow, the array is converted from string to an actual img
+		frame.save('frame.jpg') # saves the new frame
+		self.ids.img.reload() # Updates the actual image
 		print("change image")
-		if ret == True:
-			print("I'm getting here")
-		else:
-			print("here again")
-			self.ids.img.source = 'img.jpg'
-			print("------------------No feed------------------")
 
 	def on_stop(self):
 		self.capture.release()
