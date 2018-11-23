@@ -28,7 +28,7 @@ class KivyCamera(Image):
 class CamApp(App):
     def build(self):
         self.capture = cv2.VideoCapture(0)
-        self.my_camera = KivyCamera(capture=self.capture, fps=30)
+        self.my_camera = KivyCamera(capture=self.capture, fps=240)
         return self.my_camera
 
     def on_stop(self):

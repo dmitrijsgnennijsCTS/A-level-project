@@ -1,18 +1,17 @@
+# sudo pip(pip3) install matplotlib, numpy, opencv, pillow, kivy
+
 from kivy.app import App # Import the app to run the code and create window
 from kivy.uix.floatlayout import FloatLayout # Import the ability of putting widgets in any place on the window
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition # Import the ability to create multiple screens and anything related
 from kivy.uix.widget import Widget
 from kivy.properties import StringProperty
-
 from kivy.lang import Builder
-
 from kivy.config import Config # Import config to configure setting
 import numpy as np
 import cv2
 import PIL
 from kivy.uix.image import Image
 from kivy.clock import Clock
-from time import time
 
 
 Config.set('kivy', 'exit_on_escape', '1') # When exit key pressed then close the program
@@ -27,15 +26,21 @@ Window.clearcolor = ((.2*.75), (.72*.75) ,(.80*.75) ,1) # Colour of the window
 class MainScreen(Screen, FloatLayout):
 	def __init__(self, **kwargs):
 		super(MainScreen, self).__init__(**kwargs)
-		self.capture = cv2.VideoCapture(0) # captures the data from the camera with index 0 (primary)
+		self.capture = cv2.VideoCapture(1) # captures the data from the camera with index 0 (primary)
 		Clock.schedule_interval(self.update, 1.0 / 30) # <--- If fps change is required/ Also code used for updating the frame
 
 	def update(self, dt):
 		ret, frame = self.capture.read() # reads the cv2 output from the camera
-		frame = PIL.Image.fromarray(frame) # using pillow, the array is converted from string to an actual img
-		frame.save('frame.jpg') # saves the new frame
-		self.ids.img.reload() # Updates the actual image
-		print("change image")
+		if ret:
+			frame = PIL.Image.fromarray(frame) # using pillow, the array is converted from string to an actual img
+			frame.save('frame.jpg') # saves the new frame
+			self.ids.img.reload() # Updates the actual image
+		else:
+			print(self.ids.img.source)
+			# if self.ids.img.source == 'img.jpg':
+			# 	pass
+			# else:
+			# 	self.ids.img.source = 'img.jpg' 
 
 	def on_stop(self):
 		self.capture.release()
