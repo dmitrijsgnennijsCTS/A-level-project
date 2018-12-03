@@ -37,8 +37,9 @@ ScreenManagement:
 	
 	Image:
 		id: img
-		size_hint: [.75,.75]
-		pos_hint: {'x':.125, 'y':.125}
+		size_hint_y: .7
+		allow_stretch: True
+		pos_hint: {'center_x':.5, 'y':.15}
 		source: 'frame.jpg'
 
 
@@ -75,7 +76,7 @@ ScreenManagement:
 	Button:
 		id: btn_speed
 		text: "Mph"
-		size_hint: [.1, .1]
+		size_hint: [.2, .1]
 		pos_hint: {'x': .45, 'center_y': .8}
 		on_press: root.Speed_Units()
 
@@ -93,7 +94,7 @@ ScreenManagement:
 	ToggleButton:
 		id: btn_pedestrians
 		text: "Off"
-		size_hint: [.1, .1]
+		size_hint: [.2, .1]
 		pos_hint: {'x': .45, 'center_y': .65}
 		on_press: root.Pedestrians()
 
@@ -112,7 +113,7 @@ ScreenManagement:
 	Button:
 		id: btn_dunit
 		text: "Meters"
-		size_hint: [.1, .1]
+		size_hint: [.2, .1]
 		pos_hint: {'x': .45, 'center_y': .5}
 		on_press: root.Distance_Units()
 
@@ -131,7 +132,7 @@ ScreenManagement:
 	ToggleButton:
 		id: btn_cardis
 		text: "Off"
-		size_hint: [.1, .1]
+		size_hint: [.2, .1]
 		pos_hint: {'x': .45, 'center_y': .35}
 		on_press: root.Distance_ToCar()
 
@@ -151,7 +152,7 @@ ScreenManagement:
 	ToggleButton:
 		id: btn_speedcar
 		text: "Off"
-		size_hint: [.1,.1]
+		size_hint: [.2,.1]
 		pos_hint: {'x': .45, 'center_y': .2}
 		on_press: root.Car_Speed()
 
