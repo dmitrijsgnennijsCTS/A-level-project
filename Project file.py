@@ -1,5 +1,9 @@
 # sudo pip(pip3) install matplotlib, numpy, opencv, pillow, kivy
 
+##############################################
+##                v 1.0.0                    #
+##############################################
+
 from kivy.app import App # Import the app to run the code and create window
 from kivy.uix.floatlayout import FloatLayout # Import the ability of putting widgets in any place on the window
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition # Import the ability to create multiple screens and anything related
