@@ -1,4 +1,4 @@
-# sudo pip(pip3) install matplotlib, numpy, opencv, pillow, kivy # Libraries required!!!
+# sudo pip(pip3) install matplotlib, numpy, opencv, kivy # Libraries required!!!
 
 ##############################################
 ##                v 1.0.1                    #
