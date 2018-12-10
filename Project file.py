@@ -24,6 +24,10 @@ from kivy.core.window import Window # Import Window to get window size
 
 Window.clearcolor = ((.2*.75), (.72*.75) ,(.80*.75) ,1) # Colour of the window
 
+global stopped 
+stopped = False
+
+
 class MainScreen(Screen, FloatLayout):
 	def __init__(self, **kwargs):
 		super(MainScreen, self).__init__(**kwargs)
@@ -31,17 +35,19 @@ class MainScreen(Screen, FloatLayout):
 		Clock.schedule_interval(self.update, 1.0 / 30) # <--- If fps change is required/ Also code used for updating the frame
 
 	def update(self, dt):
-		ret, frame = self.capture.read() # reads the cv2 output from the camera
-		if ret:
-			cv2.imwrite('frame.jpg', frame) # save the image using the cv2 library
-			self.ids.img.reload() # Updates the actual image
-		else:
-			self.ids.img.source = 'img2.jpg' # If the camera is not reachable then an image is displayed which indicates
-											 # that the camera is not accessible
-
-	def stop(self):
-		print('stopped')
-		self.capture.release() # release the camera when program stopped. without this the app will not close
+		print(stopped)
+		if stopped == False:
+			ret, frame = self.capture.read() # reads the cv2 output from the camera
+			if ret:
+				cv2.imwrite('frame.jpg', frame) # save the image using the cv2 library
+				self.ids.img.reload() # Updates the actual image
+			else:
+				self.ids.img.source = 'img2.jpg' # If the camera is not reachable then an image is displayed which indicates
+												 # that the camera is not accessible
+		elif stopped == True:
+			print('stopped')
+			capture.release() # release the camera when program stopped. without this the app will not close
+			print('released camera')
 
 	def Cruise_Control_Button(self): # function of the cruise button
 		if self.btn_c.text == "Cruise Control: Off":
@@ -110,7 +116,10 @@ class MainApp(App):
 	
 	def on_stop(self):
 		print('quiting and releasing camera')
-		MainScreen.stop(self)
+		global stopped 
+		stopped = True
+		print(stopped)
+		MainScreen.update(MainScreen, 1)
 
 
 if __name__ == "__main__":
