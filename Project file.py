@@ -39,7 +39,8 @@ class MainScreen(Screen, FloatLayout):
 			self.ids.img.source = 'img2.jpg' # If the camera is not reachable then an image is displayed which indicates
 											 # that the camera is not accessible
 
-	def on_stop(self):
+	def stop(self):
+		print('stopped')
 		self.capture.release() # release the camera when program stopped. without this the app will not close
 
 	def Cruise_Control_Button(self): # function of the cruise button
@@ -106,6 +107,11 @@ gui = Builder.load_file('projectfile.kv') # a link between the kv ffile and the 
 class MainApp(App):
 	def build(self):
 		return gui #displays the gui form of the program
+	
+	def on_stop(self):
+		print('quiting and releasing camera')
+		MainScreen.stop(self)
+
 
 if __name__ == "__main__":
 	MainApp().run() #run the app if not a daughter program
