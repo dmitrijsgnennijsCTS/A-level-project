@@ -1,7 +1,7 @@
 # sudo pip(pip3) install matplotlib, numpy, opencv, kivy # Libraries required!!!
 
 ##############################################
-##                v 1.0.1                    #
+##                v 1.0.2                    #
 ##############################################
 
 from kivy.app import App # Import the app to run the code and create window
@@ -13,6 +13,7 @@ from kivy.config import Config # Import config to configure setting
 import numpy as np # import the numpy array in order to manipulate the data from the camera
 import cv2 # import the cv2 library which helps with analysing images
 from kivy.clock import Clock # import a library that will be responsable for running a update sequence every time period
+from sys import exit
 
 
 Config.set('kivy', 'exit_on_escape', '1') # When exit key pressed then close the program
@@ -32,10 +33,12 @@ class MainScreen(Screen, FloatLayout):
 	def __init__(self, **kwargs):
 		super(MainScreen, self).__init__(**kwargs)
 		self.capture = cv2.VideoCapture(0) # captures the data from the camera with index 0 (primary)
-		Clock.schedule_interval(self.update, 1.0 / 30) # <--- If fps change is required/ Also code used for updating the frame
+		if stopped == False:
+			Clock.schedule_interval(self.update, 1.0 / 30) # <--- If fps change is required/ Also code used for updating the frame
+		else:
+			self.update(1/30)
 
 	def update(self, dt):
-		print(stopped)
 		if stopped == False:
 			ret, frame = self.capture.read() # reads the cv2 output from the camera
 			if ret:
@@ -45,9 +48,9 @@ class MainScreen(Screen, FloatLayout):
 				self.ids.img.source = 'img2.jpg' # If the camera is not reachable then an image is displayed which indicates
 												 # that the camera is not accessible
 		elif stopped == True:
-			print('stopped')
-			capture.release() # release the camera when program stopped. without this the app will not close
-			print('released camera')
+			self.capture.release() # release the camera when program stopped. without this the app will not close
+			print('Camera released\nQuitting')
+			exit(0)
 
 	def Cruise_Control_Button(self): # function of the cruise button
 		if self.btn_c.text == "Cruise Control: Off":
@@ -115,11 +118,10 @@ class MainApp(App):
 		return gui #displays the gui form of the program
 	
 	def on_stop(self):
-		print('quiting and releasing camera')
+		print('Quiting and releasing camera')
 		global stopped 
 		stopped = True
-		print(stopped)
-		MainScreen.update(MainScreen, 1)
+		MainScreen().run()
 
 
 if __name__ == "__main__":
