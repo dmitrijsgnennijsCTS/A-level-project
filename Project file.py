@@ -7,7 +7,6 @@
 from kivy.app import App # Import the app to run the code and create window
 from kivy.uix.floatlayout import FloatLayout # Import the ability of putting widgets in any place on the window
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition # Import the ability to create multiple screens and anything related
-#from kivy.properties import StringProperty #dont seem to do anything
 from kivy.lang import Builder # part of kivy that is responsable for linking the kv file with py
 from kivy.config import Config # Import config to configure setting
 import numpy as np # import the numpy array in order to manipulate the data from the camera
