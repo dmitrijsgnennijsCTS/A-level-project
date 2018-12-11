@@ -36,21 +36,18 @@ class MainScreen(Screen, FloatLayout):
 		if stopped == False:
 			Clock.schedule_interval(self.update, 1.0 / 30) # <--- If fps change is required/ Also code used for updating the frame
 		else:
-			self.update(1/30)
-
-	def update(self, dt):
-		if stopped == False:
-			ret, frame = self.capture.read() # reads the cv2 output from the camera
-			if ret:
-				cv2.imwrite('frame.jpg', frame) # save the image using the cv2 library
-				self.ids.img.reload() # Updates the actual image
-			else:
-				self.ids.img.source = 'img2.jpg' # If the camera is not reachable then an image is displayed which indicates
-												 # that the camera is not accessible
-		elif stopped == True:
 			self.capture.release() # release the camera when program stopped. without this the app will not close
 			print('Camera released\nQuitting')
 			exit(0)
+
+	def update(self, dt):
+		ret, frame = self.capture.read() # reads the cv2 output from the camera
+		if ret:
+			cv2.imwrite('frame.jpg', frame) # save the image using the cv2 library
+			self.ids.img.reload() # Updates the actual image
+		else:
+			self.ids.img.source = 'img2.jpg' # If the camera is not reachable then an image is displayed which indicates
+											 # that the camera is not accessible
 
 	def Cruise_Control_Button(self): # function of the cruise button
 		if self.btn_c.text == "Cruise Control: Off":
