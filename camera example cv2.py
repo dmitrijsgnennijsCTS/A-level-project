@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 cap = cv2.VideoCapture(0)
-haar_cascade = cv2.CascadeClassifier('C:/Users/Dmitrijs/Documents/GitHub/A-level-project-/stop/classifier/cascade.xml')
+haar_cascade = cv2.CascadeClassifier('stop/classifier/cascade.xml')
 
 
 while(True):
