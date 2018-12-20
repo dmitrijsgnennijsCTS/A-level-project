@@ -9,13 +9,15 @@ while(True):
     # Capture frame-by-frame
     ret, frame = cap.read()
 
-    # Our operations on the frame come here
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = haar_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5); 
-    for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-    # Display the resulting frame
-    cv2.imshow('frame',frame)
+    z = frame.reshape((-1, 3))
+    z = np.float32(z)
+    criteria = (cv2.TERM_CRITERIA_EPS, 10, 1.0)
+    ret, label, center = cv2.kmeans(z, 4, None, criteria, 10, 0)
+    center = np.uint8(center)
+    res = center[label.flatten()]
+    res2 = res.reshape((frame.shape))
+    cv2.imshow('preview', res2)
+
     if cv2.waitKey(1) == 27:
         break
 
