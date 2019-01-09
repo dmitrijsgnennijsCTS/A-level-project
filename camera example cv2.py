@@ -8,16 +8,25 @@ haar_cascade = cv2.CascadeClassifier('stop/classifier/cascade.xml')
 while(True):
     # Capture frame-by-frame
     ret, frame = cap.read()
+    print("repeat")
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    z = frame.reshape((-1, 3))
-    z = np.float32(z)
-    criteria = (cv2.TERM_CRITERIA_EPS, 10, 1.0)
-    ret, label, center = cv2.kmeans(z, 4, None, criteria, 10, 0)
-    center = np.uint8(center)
-    res = center[label.flatten()]
-    res2 = res.reshape((frame.shape))
-    cv2.imshow('preview', res2)
+    # s = 0
 
+    # for i in range(20):
+    #     #print('r',gray[i,0])
+    #     #print('g',gray[i,1])
+    #     #print('b',gray[i,2])
+    #     s = s + gray[i,0] + gray[i,1] + gray[i,2]
+
+    # print(s/60)
+    # s = s/60
+
+    # if s <= 20:
+    #     print(dark)
+    # #print(gray)
+
+    cv2.imshow('gray', gray)
     if cv2.waitKey(1) == 27:
         break
 

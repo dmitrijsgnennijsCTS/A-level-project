@@ -1,7 +1,7 @@
 # sudo pip(pip3) install matplotlib, numpy, opencv, kivy # Libraries required!!!
 
 ##############################################
-##                v 1.0.2                    #
+##                v 1.0.3                    #
 ##############################################
 
 from kivy.app import App # Import the app to run the code and create window
@@ -9,14 +9,16 @@ from kivy.uix.floatlayout import FloatLayout # Import the ability of putting wid
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition # Import the ability to create multiple screens and anything related
 from kivy.lang import Builder # part of kivy that is responsable for linking the kv file with py
 from kivy.config import Config # Import config to configure setting
+from kivy.graphics.texture import Texture
 import numpy as np # import the numpy array in order to manipulate the data from the camera
 import cv2 # import the cv2 library which helps with analysing images
 from kivy.clock import Clock # import a library that will be responsable for running a update sequence every time period
 from sys import exit
+from kivy.uix.image import Image
 
 
 Config.set('kivy', 'exit_on_escape', '1') # When exit key pressed then close the program
-Config.set('graphics', 'fullscreen', 'auto') # Fulscreen is enabled and will be auto. So will be set to display res
+Config.set('graphics', 'fullscreen', '0') # Fulscreen is enabled and will be auto. So will be set to display res
 Config.set("graphics", "show_cursor", '1') # Allow the cursor to be shown on the display when the program is running.
 
 
@@ -28,7 +30,7 @@ global stopped
 stopped = False
 
 
-class MainScreen(Screen, FloatLayout):
+class MainScreen(Screen, FloatLayout, Image):
 	def __init__(self, **kwargs):
 		super(MainScreen, self).__init__(**kwargs)
 		self.capture = cv2.VideoCapture(0) # captures the data from the camera with index 0 (primary)
@@ -41,12 +43,19 @@ class MainScreen(Screen, FloatLayout):
 
 	def update(self, dt):
 		ret, frame = self.capture.read() # reads the cv2 output from the camera
+		
 		if ret:
-			cv2.imwrite('frame.jpg', frame) # save the image using the cv2 library
-			self.ids.img.reload() # Updates the actual image
+			# convert it to texture
+			buf1 = cv2.flip(frame, 0)
+			buf = buf1.tostring()
+			image_texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
+			image_texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
+			#display image from the texture
+			self.texture = image_texture
 		else:
 			self.ids.img.source = 'img2.jpg' # If the camera is not reachable then an image is displayed which indicates
 											 # that the camera is not accessible
+					#### HAS TO BE UPDATED!!!!
 
 	def Cruise_Control_Button(self): # function of the cruise button
 		if self.btn_c.text == "Cruise Control: Off":
