@@ -11,7 +11,7 @@ ScreenManagement:
 	btn_c: btn_cruise
 	btn_s: btn_settings
 	name: "main"
-
+	
 	Button:
 		id: btn_settings
 		text: "Settings"
@@ -34,6 +34,13 @@ ScreenManagement:
 		size_hint: [.5,.1]
 		pos_hint: {'x': .5, 'center_y': .05}
 		on_press: root.Lane_Assist_Button()
+
+	Label:
+		text: "Speed unit"
+		pos_hint: {'x': 0, 'center_y': .95}
+		size_hint: [.75, .1]
+		halign: 'left'
+		color: (.8, 0, 0, 1)
 
 
 
@@ -148,6 +155,3 @@ ScreenManagement:
 		size_hint: [.2,.1]
 		pos_hint: {'x': .45, 'center_y': .2}
 		on_press: root.Car_Speed()
-
-
-		

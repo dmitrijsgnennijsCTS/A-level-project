@@ -18,7 +18,7 @@ from kivy.uix.image import Image
 
 
 Config.set('kivy', 'exit_on_escape', '1') # When exit key pressed then close the program
-Config.set('graphics', 'fullscreen', '0') # Fulscreen is enabled and will be auto. So will be set to display res
+Config.set('graphics', 'fullscreen', 'auto') # Fulscreen is enabled and will be auto. So will be set to display res
 Config.set("graphics", "show_cursor", '1') # Allow the cursor to be shown on the display when the program is running.
 
 
@@ -35,7 +35,7 @@ class MainScreen(Screen, FloatLayout, Image):
 		super(MainScreen, self).__init__(**kwargs)
 		self.capture = cv2.VideoCapture(0) # captures the data from the camera with index 0 (primary)
 		if stopped == False:
-			Clock.schedule_interval(self.update, 1.0 / 30) # <--- If fps change is required/ Also code used for updating the frame
+			Clock.schedule_interval(self.update, 1.0 / 24) # <--- If fps change is required/ Also code used for updating the frame
 		else:
 			self.capture.release() # release the camera when program stopped. without this the app will not close
 			print('Camera released\nQuitting')
@@ -52,9 +52,10 @@ class MainScreen(Screen, FloatLayout, Image):
 			image_texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
 			#display image from the texture
 			self.texture = image_texture
+			
 		else:
-			self.ids.img.source = 'img2.jpg' # If the camera is not reachable then an image is displayed which indicates
-											 # that the camera is not accessible
+			print()
+			self.texture = Image('img2.jpg').texture
 					#### HAS TO BE UPDATED!!!!
 
 	def Cruise_Control_Button(self): # function of the cruise button
