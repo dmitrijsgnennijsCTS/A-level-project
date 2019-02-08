@@ -1,4 +1,4 @@
-# sudo pip(pip3) install matplotlib, numpy, opencv, kivy # Libraries required!!!
+# sudo pip(pip3) install matplotlib, numpy, opencv, kivy, pillow # Libraries required!!!
 
 ##############################################
 ##                v 1.0.3                    #
@@ -43,18 +43,23 @@ class MainScreen(Screen, FloatLayout, Image):
 
 	def update(self, dt):
 		ret, frame = self.capture.read() # reads the cv2 output from the camera
-		
 		if ret:
-			# convert it to texture
-			buf1 = cv2.flip(frame, 0)
-			buf = buf1.tostring()
-			image_texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
-			image_texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
-			#display image from the texture
-			self.texture = image_texture
+			checkFrame = frame.copy()
+			checkFrame.resize((1,1))
+			if checkFrame[0][0] >=2:
+				self.lbl_d.text = ("")
+				# convert frame to texture
+				buf1 = cv2.flip(frame, 0)
+				buf = buf1.tostring()
+				image_texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
+				image_texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
+				#display image from the texture
+				self.texture = image_texture
+			else:
+				print("The frame received is black!")
+				self.lbl_d.text = ("Too dark")
 			
 		else:
-			print()
 			self.texture = Image('img2.jpg').texture
 					#### HAS TO BE UPDATED!!!!
 
