@@ -43,18 +43,27 @@ class MainScreen(Screen, FloatLayout, Image):
 
 	def update(self, dt):
 		ret, frame = self.capture.read() # reads the cv2 output from the camera
+		print(Window.size)
+		height = int(Window.size[1] * 0.8)
+		aspectRatio = frame.shape[0]/frame.shape[1]
+		print(aspectRatio)
+		width = int(height / aspectRatio)
+		frame = cv2.resize(frame, (width, height))
 		if ret:
 			checkFrame = frame.copy()
 			checkFrame.resize((1,1))
+			print(frame.shape)
+			self.lbl_d.text = ("")
+			# convert frame to texture
+			buf1 = cv2.flip(frame, 0)
+			buf = buf1.tostring()
+			image_texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
+			image_texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
+			#display image from the texture
+			self.texture = image_texture
 			if checkFrame[0][0] >=2:
 				self.lbl_d.text = ("")
-				# convert frame to texture
-				buf1 = cv2.flip(frame, 0)
-				buf = buf1.tostring()
-				image_texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
-				image_texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
-				#display image from the texture
-				self.texture = image_texture
+
 			else:
 				print("The frame received is black!")
 				self.lbl_d.text = ("Too dark")
