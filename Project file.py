@@ -43,7 +43,7 @@ class MainScreen(Screen, FloatLayout, Image):
 
 	def update(self, dt):
 		ret, frame = self.capture.read() # reads the cv2 output from the camera
-		height = int(Window.size[1] * 0.8) # work out the size of the frame that should be displayed relative to the window size
+		height = int(Window.size[1] * 0.75) # work out the size of the frame that should be displayed relative to the window size
 		aspectRatio = frame.shape[0]/frame.shape[1] # work out the aspect ratio of the frames received in order to work out the correct width of frames
 		width = int(height / aspectRatio) # work out the correct relative width of the frame
 		frame = cv2.resize(frame, (width, height)) # resize the received frames to the correct relative size to the window
