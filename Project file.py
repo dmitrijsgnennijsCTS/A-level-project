@@ -43,28 +43,26 @@ class MainScreen(Screen, FloatLayout, Image):
 
 	def update(self, dt):
 		ret, frame = self.capture.read() # reads the cv2 output from the camera
-		print(Window.size)
-		height = int(Window.size[1] * 0.8)
-		aspectRatio = frame.shape[0]/frame.shape[1]
-		print(aspectRatio)
-		width = int(height / aspectRatio)
-		frame = cv2.resize(frame, (width, height))
-		if ret:
-			checkFrame = frame.copy()
-			checkFrame.resize((1,1))
-			print(frame.shape)
-			self.lbl_d.text = ("")
-			# convert frame to texture
-			buf1 = cv2.flip(frame, 0)
-			buf = buf1.tostring()
-			image_texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
-			image_texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
-			#display image from the texture
-			self.texture = image_texture
-			if checkFrame[0][0] >=2:
+		height = int(Window.size[1] * 0.8) # work out the size of the frame that should be displayed relative to the window size
+		aspectRatio = frame.shape[0]/frame.shape[1] # work out the aspect ratio of the frames received in order to work out the correct width of frames
+		width = int(height / aspectRatio) # work out the correct relative width of the frame
+		frame = cv2.resize(frame, (width, height)) # resize the received frames to the correct relative size to the window
+		if ret: # if a camera is turned on and iscapturing for the current program then the current statement will be true
+			checkFrame = frame.copy() # copy the array of the frame to the variable
+			checkFrame.resize((1,1)) # resize the whole array/frame to a size 1*1
+			buf1 = cv2.flip(frame, 0) # in order to display frames in kivy, they must be converteed to textures
+			# this requires the frame array to be flipped
+			buf = buf1.tostring() # the array has to be convrted into a string in order to be displayed in ther main window
+			image_texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr') # a texture (a space where graphics can be displayed) 
+			# has to be created with the data of the frame, in order to have the frame being the correct size displayed
+			image_texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte') # save the texture created to the buffer in order to use afterwards in the kv file
+			# by saving texture in the buffer because the buffer is faster access memory in comparison to secondary memory
+			self.texture = image_texture # assign the texture to the main window
+
+			if checkFrame[0][0] >=2: # check if the frame received has a brightness of above the certain threshold 
 				self.lbl_d.text = ("")
 
-			else:
+			else: # if the frame is too dark then display a warning message
 				print("The frame received is black!")
 				self.lbl_d.text = ("Too dark")
 			
