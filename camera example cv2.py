@@ -2,38 +2,27 @@ import numpy as np
 import cv2
 from PIL import Image
 
-cap = cv2.VideoCapture(0)
+for images in range(15):
+	img = str(images+1) + ".jpg"
+	#print(img)
+	cap = cv2.VideoCapture('C:/Users/Dmitrijs/Documents/GitHub/A-level-project-/new/n/' + img)
+	ret, frame = cap.read()
+	frame = cv2.resize(frame, (1, 1))
+	#cap = cv2.imread('C:/Users/Dmitrijs/Documents/GitHub/A-level-project-/stop/p/' + img, 0)
+	#cv2.imshow('frame',frame)
+	calc = 0
+	tot = 0
+	for i in range(len(frame)):
+		#print(frame[i])
+		for n in range(len(frame[i])):
+			#print(frame[i][n])
+			for x in range(len(frame[i][n])):
+				#print(frame[i][n][x])
+				calc += frame[i][n][x]
+				tot +=1
 
-#cap = cv2.VideoCapture('VID_20181222_210041.mp4')
-#haar_cascade = cv2.CascadeClassifier('stop/classifier/cascade.xml')
-while(True):
-    ret, frame = cap.read()
-    frame2 = frame.resize((1,1))
-    print(frame2[0][0]) # Prints the darkness of image
-    if cv2.waitKey(1) == 27:
-        break
-
-# When everything done, release the capture
+	print(int(calc/tot))
 cap.release()
-cv2.destroyAllWindows()
-
-import numpy as np
-import cv2
-from PIL import Image
-
-cap = cv2.VideoCapture(0)
-
-ret, frame = cap.read()
-
-calc = 0
-#frame = cv2.resize(frame, (1, 1))
-for i in range(len(frame)):
-    for n in range(len(frame[i])):
-        for x in range(len(frame[i][n])):
-            calc += frame[i][n][x]
-   
-print(int(calc/(3*(len(frame)*len(frame[0])))))
-
 
 
 
