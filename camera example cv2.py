@@ -17,6 +17,40 @@ while(True):
 cap.release()
 cv2.destroyAllWindows()
 
+import numpy as np
+import cv2
+from PIL import Image
+
+cap = cv2.VideoCapture(0)
+
+ret, frame = cap.read()
+
+calc = 0
+#frame = cv2.resize(frame, (1, 1))
+for i in range(len(frame)):
+    for n in range(len(frame[i])):
+        for x in range(len(frame[i][n])):
+            calc += frame[i][n][x]
+   
+print(int(calc/(3*(len(frame)*len(frame[0])))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
