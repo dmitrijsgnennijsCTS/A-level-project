@@ -9,12 +9,13 @@ from kivy.uix.floatlayout import FloatLayout # Import the ability of putting wid
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition # Import the ability to create multiple screens and anything related
 from kivy.lang import Builder # part of kivy that is responsable for linking the kv file with py
 from kivy.config import Config # Import config to configure setting
+from kivy.core.image import Image as CoreImage
+from kivy.uix.image import Image
 from kivy.graphics.texture import Texture
 import numpy as np # import the numpy array in order to manipulate the data from the camera
 import cv2 # import the cv2 library which helps with analysing images
 from kivy.clock import Clock # import a library that will be responsable for running a update sequence every time period
 from sys import exit
-from kivy.uix.image import Image
 
 
 Config.set('kivy', 'exit_on_escape', '1') # When exit key pressed then close the program
@@ -42,14 +43,19 @@ class MainScreen(Screen, FloatLayout, Image):
 			exit(0)
 
 	def update(self, dt):
+		checkSize = 10 # the size inpixels of width and height of brightness img
+		# decrease  ^ to increase performance or increase to improve the accuracy
 		ret, frame = self.capture.read() # reads the cv2 output from the camera
-		height = int(Window.size[1] * 0.75) # work out the size of the frame that should be displayed relative to the window size
-		aspectRatio = frame.shape[0]/frame.shape[1] # work out the aspect ratio of the frames received in order to work out the correct width of frames
-		width = int(height / aspectRatio) # work out the correct relative width of the frame
-		frame = cv2.resize(frame, (width, height)) # resize the received frames to the correct relative size to the window
+		
 		if ret: # if a camera is turned on and iscapturing for the current program then the current statement will be true
+			height = int(Window.size[1] * 0.75) # work out the size of the frame that should be displayed relative to the window size
+			aspectRatio = frame.shape[0]/frame.shape[1] # work out the aspect ratio of the frames received in order to work out the correct width of frames
+			width = int(height / aspectRatio) # work out the correct relative width of the frame
+			frame = cv2.resize(frame, (width, height)) # resize the received frames to the correct relative size to the window
 			checkFrame = frame.copy() # copy the array of the frame to the variable
-			checkFrame.resize((1,1)) # resize the whole array/frame to a size 1*1
+			calc = 0
+			total = 0
+			checkFrame = cv2.resize(checkFrame, (checkSize, checkSize)) # resizes the brightness image to increase performance
 			buf1 = cv2.flip(frame, 0) # in order to display frames in kivy, they must be converteed to textures
 			# this requires the frame array to be flipped
 			buf = buf1.tostring() # the array has to be convrted into a string in order to be displayed in ther main window
@@ -58,16 +64,21 @@ class MainScreen(Screen, FloatLayout, Image):
 			image_texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte') # save the texture created to the buffer in order to use afterwards in the kv file
 			# by saving texture in the buffer because the buffer is faster access memory in comparison to secondary memory
 			self.texture = image_texture # assign the texture to the main window
+			for row in range(len(checkFrame)):
+				for column in range(len(checkFrame[row])):
+					for pixel in range(len(checkFrame[row][column])):
+						calc += checkFrame[row][column][pixel]
 
-			if checkFrame[0][0] >=2: # check if the frame received has a brightness of above the certain threshold 
+			if int(calc/((checkSize**2)*3)) >=20: # check if the frame received has a brightness of above the certain threshold 
 				self.lbl_d.text = ("")
 
 			else: # if the frame is too dark then display a warning message
-				print("The frame received is black!")
+				print("The frame received is black!", calc/total)
 				self.lbl_d.text = ("Too dark")
 			
 		else:
-			self.texture = Image('img2.jpg').texture
+			self.texture = CoreImage("img2.jpg").texture
+			self.lbl_d.text = ("Connection to camera lost!")
 					#### HAS TO BE UPDATED!!!!
 
 	def Cruise_Control_Button(self): # function of the cruise button
