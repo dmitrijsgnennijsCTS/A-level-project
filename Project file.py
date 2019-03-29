@@ -36,7 +36,7 @@ class MainScreen(Screen, FloatLayout, Image):
 		super(MainScreen, self).__init__(**kwargs)
 		self.capture = cv2.VideoCapture(0) # captures the data from the camera with index 0 (primary)
 		if stopped == False:
-			Clock.schedule_interval(self.update, 1.0 / 24) # <--- If fps change is required/ Also code used for updating the frame
+			Clock.schedule_interval(self.update, 1.0 / 60) # <--- If fps change is required/ Also code used for updating the frame
 		else:
 			self.capture.release() # release the camera when program stopped. without this the app will not close
 			print('Camera released\nQuitting')
@@ -71,10 +71,11 @@ class MainScreen(Screen, FloatLayout, Image):
 
 			if int(calc/((checkSize**2)*3)) >=20: # check if the frame received has a brightness of above the certain threshold 
 				self.lbl_d.text = ("")
+				self.lbl_d.background_color = ((.2*.75),(.72*.75),(.8*.75), 1)
 
 			else: # if the frame is too dark then display a warning message
-				print("The frame received is black!", calc/total)
 				self.lbl_d.text = ("Too dark")
+				self.lbl_d.background_color = (1, 0, 0 ,1)
 			
 		else:
 			self.texture = CoreImage("img2.jpg").texture

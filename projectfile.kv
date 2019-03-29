@@ -36,13 +36,16 @@ ScreenManagement:
 		pos_hint: {'x': .5, 'center_y': .05}
 		on_press: root.Lane_Assist_Button()
 
-	Label:
+	Button:
 		id: label_dark
 		text: ""
 		pos_hint: {'x': 0, 'center_y': .95}
-		size_hint: [.75, .1]
+		size_hint: [2/3, .1]
 		halign: 'left'
-		color: (.8, 0, 0, 1)
+		background_color: (0,1,0,1)
+		background_disabled_normal: ''
+		disabled: True
+		color: (1, 1, 1, 1)
 		font_size: sp(20)
 
 
