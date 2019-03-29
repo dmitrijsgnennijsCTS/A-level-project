@@ -42,17 +42,28 @@ class MainScreen(Screen, FloatLayout, Image):
 			print('Camera released\nQuitting')
 			exit(0)
 
+	def StopSignIdentification(gFrame):
+		frame = gFrame
+		haar_cascade = cv2.CascadeClassifier("C:/Users/Dmitrijs/Desktop/A-level-project/stop/classifier/cascade.xml")
+		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+		signs = haar_cascade.detectMultiScale(gray, scaleFactor = 1.1, minNeighbors = 5)
+		for (x,y,w,h) in signs:
+			cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 2)
+		return frame
+
 	def update(self, dt):
 		checkSize = 10 # the size inpixels of width and height of brightness img
 		# decrease  ^ to increase performance or increase to improve the accuracy
 		ret, frame = self.capture.read() # reads the cv2 output from the camera
 		
 		if ret: # if a camera is turned on and iscapturing for the current program then the current statement will be true
+			checkFrame = frame.copy()
+			frame = MainScreen.StopSignIdentification(frame)
 			height = int(Window.size[1] * 0.75) # work out the size of the frame that should be displayed relative to the window size
 			aspectRatio = frame.shape[0]/frame.shape[1] # work out the aspect ratio of the frames received in order to work out the correct width of frames
 			width = int(height / aspectRatio) # work out the correct relative width of the frame
 			frame = cv2.resize(frame, (width, height)) # resize the received frames to the correct relative size to the window
-			checkFrame = frame.copy() # copy the array of the frame to the variable
+			#checkFrame = frame.copy() # copy the array of the frame to the variable
 			calc = 0
 			total = 0
 			checkFrame = cv2.resize(checkFrame, (checkSize, checkSize)) # resizes the brightness image to increase performance
@@ -81,6 +92,14 @@ class MainScreen(Screen, FloatLayout, Image):
 			self.texture = CoreImage("img2.jpg").texture
 			self.lbl_d.text = ("Connection to camera lost!")
 					#### HAS TO BE UPDATED!!!!
+
+	#def StopSignIdentification(gFrame):
+		#haar_cascade = cv2.CascadeClassifier("C:/Users/Dmitrijs/Desktop/A-level-project/stop/classifier/cascade.xml")
+	#	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+	#	signs = haar_cascade.detectMultiScale(gray, scaleFactor = 1.1, minNeighbors = 5)
+	#	for (x,y,w,h) in signs:
+	#		cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 2)
+	#	return frame
 
 	def Cruise_Control_Button(self): # function of the cruise button
 		if self.btn_c.text == "Cruise Control: Off":
