@@ -19,7 +19,7 @@ from sys import exit
 
 
 Config.set('kivy', 'exit_on_escape', '1') # When exit key pressed then close the program
-Config.set('graphics', 'fullscreen', 'auto') # Fulscreen is enabled and will be auto. So will be set to display res
+Config.set('graphics', 'fullscreen', '0') # Fulscreen is enabled and will be auto. So will be set to display res
 Config.set("graphics", "show_cursor", '1') # Allow the cursor to be shown on the display when the program is running.
 
 
@@ -44,7 +44,7 @@ class MainScreen(Screen, FloatLayout, Image):
 
 	def StopSignIdentification(gFrame):
 		frame = gFrame
-		haar_cascade = cv2.CascadeClassifier("C:/Users/Dmitrijs/Desktop/A-level-project/stop/classifier/cascade.xml")
+		haar_cascade = cv2.CascadeClassifier("C:/Users/Dmitrijs/Documents/GitHub/A-level-project/new/classifier/cascade.xml")
 		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 		signs = haar_cascade.detectMultiScale(gray, scaleFactor = 1.1, minNeighbors = 5)
 		for (x,y,w,h) in signs:
