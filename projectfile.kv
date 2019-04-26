@@ -7,18 +7,20 @@ ScreenManagement:
 	SettingsScreen:
 
 <MainScreen>:
+	# Define the names of each button in order to link with py file
 	btn_l: btn_lane
 	btn_c: btn_cruise
 	btn_s: btn_settings
 	lbl_d: label_dark
 	name: "main"
 	
+	# Create buttons/togglebuttons for the user to see
 	Button:
-		id: btn_settings
-		text: "Settings"
-		size_hint: (1/3), .1
-		pos_hint: {'x': (2/3), 'center_y': .95}
-		on_release: 
+		id: btn_settings # identity given to button
+		text: "Settings" # text displayed on the button
+		size_hint: (1/3), .1 # relative size of button compared to screen
+		pos_hint: {'x': (2/3), 'center_y': .95} # relative position within the window
+		on_release: # function completed when the button is released
 			app.root.current = "settings"
 			root.manager.transition.direction = 'left'
 
@@ -27,7 +29,7 @@ ScreenManagement:
 		text: "Cruise Control: Off"
 		size_hint: [.5,.1]
 		pos_hint: {'x': 0, 'center_y': .05}
-		on_press: root.Cruise_Control_Button()
+		on_press: root.Cruise_Control_Button() # function completed when button pressed
 
 	ToggleButton:
 		id: btn_lane
@@ -36,21 +38,21 @@ ScreenManagement:
 		pos_hint: {'x': .5, 'center_y': .05}
 		on_press: root.Lane_Assist_Button()
 
-	Button:
+	Button: # button used as warning method because it can be shown and hid with ease
 		id: label_dark
 		text: ""
 		pos_hint: {'x': 0, 'center_y': .95}
 		size_hint: [2/3, .1]
 		halign: 'left'
-		background_color: (0,1,0,1)
-		background_disabled_normal: ''
-		disabled: True
+		background_color: (0,1,0,1) # color of text
+		background_disabled_normal: '' # color of the button if disabled
+		disabled: True # the button is disabled so cannot be pressed
 		color: (1, 1, 1, 1)
 		font_size: sp(20)
 
 
 
-<SettingsScreen>:
+<SettingsScreen>: # class responsible for the settings screen
 	name: "settings"
 	
 	speedUnit: btn_speed
@@ -69,7 +71,7 @@ ScreenManagement:
 		pos_hint: {'x': .75, 'center_y': .95}
 
 
-	Label:
+	Label: # a simple label responsible to display a string in the correct position
 		text: "Speed unit"
 		pos_hint: {'x': .05, 'center_y': .8}
 		size_hint: [.4, .1]
