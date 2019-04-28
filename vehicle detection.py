@@ -19,13 +19,14 @@ import cv2
 
 # This is needed since the notebook is stored in the object_detection folder.
 sys.path.append("..")
-
-
+#
+os.chdir( 'D:\\tnsrflw\\models\\research\\object_detection' )
 # ## Object detection imports
 # Here are the imports from the object detection module.
 
-from utils import label_map_util
-from utils import visualization_utils as vis_util
+from object_detection.utils import label_map_util
+
+from object_detection.utils import visualization_utils as vis_util
 
 
 # # Model preparation 
