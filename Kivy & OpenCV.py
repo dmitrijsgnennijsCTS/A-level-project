@@ -27,7 +27,7 @@ class KivyCamera(Image):
 
 class CamApp(App):
     def build(self):
-        self.capture = cv2.VideoCapture(0)
+        self.capture = cv2.VideoCapture(1)
         self.capture.set(3, 1280) #Width of the actual image in px
         self.capture.set(4, 720)
         self.my_camera = KivyCamera(capture=self.capture, fps=240)

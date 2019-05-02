@@ -1,7 +1,7 @@
 # sudo pip(pip3) install matplotlib, numpy, opencv, kivy, pillow # Libraries required!!!
 
 ##############################################
-##                v 1.0.3                    #
+##                v 1.1.1                    #
 ##############################################
 
 from kivy.app import App # Import the app to run the code and create window
@@ -31,7 +31,12 @@ global stopped
 stopped = False
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+global vehicle_close
+vehicle_close = False
+>>>>>>> 08af92d... V 1.1.1 - final upload
 sys.path.append("..")
 MODEL_NAME = 'ssd_mobilenet_v1_coco_11_06_2017'
 MODEL_FILE = MODEL_NAME + '.tar.gz'
@@ -72,14 +77,15 @@ with detection_graph.as_default():
 
 			def StopSignIdentification(gFrame):
 				frame = gFrame
-				haar_cascade = cv2.CascadeClassifier("C:/Users/Dmitrijs/Documents/GitHub/A-level-project/new/classifier/cascade.xml")
+				haar_cascade = cv2.CascadeClassifier("C:/Users/Dmitrijs/Documents/GitHub/A-level-project/stop/classifier/cascade.xml")
 				gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 				signs = haar_cascade.detectMultiScale(gray, scaleFactor = 1.1, minNeighbors = 5)
 				for (x,y,w,h) in signs:
 					cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 2)
 				return frame
 
-			def Object_detection(image):
+			def Vehicle_detection(self, image):
+				global vehicle_close
 				image_np = image
 				image_np_expanded = np.expand_dims(image_np, axis=0)
 				image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
@@ -109,23 +115,25 @@ with detection_graph.as_default():
 						if scores[0][i] >= 0.5:
 							mid_x = (boxes[0][i][1]+boxes[0][i][3])/2
 							mid_y = (boxes[0][i][0]+boxes[0][i][2])/2
-							apx_distance = round((1 - (boxes[0][i][3] - boxes[0][i][1])),2)
-							cv2.putText(image_np, '{}'.format(apx_distance), (int(mid_x*800),int(mid_y*450)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,255), 2)
+							apx_distance = float("{0:.2f}".format(boxes[0][i][3] - boxes[0][i][1]))
+							cv2.putText(image_np, '{}'.format(apx_distance), (int(mid_x*800),int(mid_y*450)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,0,0), 2)
 
-							if apx_distance <=0.5:
-								if mid_x > 0.3 and mid_x < 0.7:
-									cv2.putText(image_np, 'WARNING!!!', (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0,0,255), 3)
-
+							if apx_distance >=0.5:
+								if mid_x > 0.35 and mid_x < 0.65:
+									vehicle_close = True
+								else:
+									vehicle_close = False
+									
 				return image_np
 
 			def update(self, dt):
 				checkSize = 10 # the size inpixels of width and height of brightness img
 				# decrease  ^ to increase performance or increase to improve the accuracy
 				ret, frame = self.capture.read() # reads the cv2 output from the camera
-				
 				if ret: # if a camera is turned on and iscapturing for the current program then the current statement will be true
 					checkFrame = frame.copy()
-					frame = MainScreen.Object_detection(frame)
+					frame = MainScreen.Vehicle_detection(self, frame)
+					#frame = MainScreen.StopSignIdentification(frame)
 					height = int(Window.size[1] * 0.75) # work out the size of the frame that should be displayed relative to the window size
 					aspectRatio = frame.shape[0]/frame.shape[1] # work out the aspect ratio of the frames received in order to work out the correct width of frames
 					width = int(height / aspectRatio) # work out the correct relative width of the frame
@@ -147,26 +155,25 @@ with detection_graph.as_default():
 							for pixel in range(len(checkFrame[row][column])):
 								calc += checkFrame[row][column][pixel]
 
-					if int(calc/((checkSize**2)*3)) >=20: # check if the frame received has a brightness of above the certain threshold 
+					global vehicle_close
+
+					if int(calc/((checkSize**2)*3)) >=20 and vehicle_close == False: # check if the frame received has a brightness of above the certain threshold 
 						self.lbl_d.text = ("")
 						self.lbl_d.background_color = ((.2*.75),(.72*.75),(.8*.75), 1)
+
+					elif vehicle_close == True:
+						self.lbl_d.text = ("Warning: vehicle ahead")
+						self.lbl_d.background_color = (1, 0, 0 ,1)
+						vehicle_close = False
 
 					else: # if the frame is too dark then display a warning message
 						self.lbl_d.text = ("Too dark")
 						self.lbl_d.background_color = (1, 0, 0 ,1)
 					
 				else:
-					self.texture = CoreImage("img2.jpg").texture
+					self.texture = CoreImage("C:/Users/Dmitrijs/Documents/GitHub/A-level-project/img2.jpg").texture
 					self.lbl_d.text = ("Connection to camera lost!")
-							#### HAS TO BE UPDATED!!!!
-
-			#def StopSignIdentification(gFrame):
-				#haar_cascade = cv2.CascadeClassifier("C:/Users/Dmitrijs/Desktop/A-level-project/stop/classifier/cascade.xml")
-			#	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-			#	signs = haar_cascade.detectMultiScale(gray, scaleFactor = 1.1, minNeighbors = 5)
-			#	for (x,y,w,h) in signs:
-			#		cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 2)
-			#	return frame
+					self.lbl_d.background_color = (1, 0, 0 ,1)
 
 			def Cruise_Control_Button(self): # function of the cruise button
 				if self.btn_c.text == "Cruise Control: Off":
@@ -186,37 +193,45 @@ with detection_graph.as_default():
 			def Speed_Units(self): # function of the speed unit button
 				
 				if self.speedUnit.text == "Mph":
-					 self.speedUnit.text = ("Kph")
+					self.speedUnit.text = ("Kph")
+					print("Speed Units")
 				else:
 					self.speedUnit.text = ("Mph")
 				
 			def Pedestrians(self):
 				
 				if self.pedestrians.text == "Off":
-					 self.pedestrians.text = ("On")
+					self.pedestrians.text = ("On")
+					print("Pedestrians")
 				else:
 					self.pedestrians.text = ("Off")
 				
 			def Distance_Units(self):
 				
 				if self.distanceUnit.text == "Meters":
-					 self.distanceUnit.text = ("Yards")
+					self.distanceUnit.text = ("Yards")
+					print("Distance Units")
+
 				elif self.distanceUnit.text == "Yards":
 					self.distanceUnit.text = ("Feet")
+					print("Distance Units")
+
 				else:
 					self.distanceUnit.text = ("Meters")
 				
 			def Distance_ToCar(self):
 				
 				if self.carDistance.text == "Off":
-					 self.carDistance.text = ("On")
+					self.carDistance.text = ("On")
+					print("Distance to car")
 				else:
 					self.carDistance.text = ("Off")
 				
 			def Car_Speed(self):
 				
 				if self.carSpeed.text == "Off":
-					 self.carSpeed.text = ("On")
+					self.carSpeed.text = ("On")
+					print("Car speed in front")
 				else:
 					self.carSpeed.text = ("Off")
 				

@@ -13,7 +13,7 @@ ScreenManagement:
 	btn_s: btn_settings
 	lbl_d: label_dark
 	name: "main"
-	
+
 	# Create buttons/togglebuttons for the user to see
 	Button:
 		id: btn_settings 
@@ -51,9 +51,12 @@ ScreenManagement:
 		pos_hint: {'x': 0, 'center_y': .95}
 		size_hint: [2/3, .1]
 		halign: 'left'
-		background_color: (0,1,0,1) # color of text
-		background_disabled_normal: '' # color of the button if disabled
-		disabled: True # the button is disabled so cannot be pressed
+		background_color: ((.2*.75), (.72*.75) ,(.80*.75) ,1) 
+		# color of text
+		background_disabled_normal: '' 
+		# color of the button if disabled
+		disabled: True 
+		# the button is disabled so cannot be pressed
 		color: (1, 1, 1, 1)
 		font_size: sp(20)
 
