@@ -16,6 +16,20 @@ import numpy as np # import the numpy array in order to manipulate the data from
 import cv2 # import the cv2 library which helps with analysing images
 from kivy.clock import Clock # import a library that will be responsable for running a update sequence every time period
 from sys import exit
+import numpy as np
+import os
+import six.moves.urllib as urllib
+import sys
+import tarfile
+import tensorflow as tf
+import zipfile
+from collections import defaultdict
+from io import StringIO
+from matplotlib import pyplot as plt
+from PIL import Image as image_pil
+from utils import label_map_util
+from utils import visualization_utils as vis_util
+
 
 
 Config.set('kivy', 'exit_on_escape', '1') # When exit key pressed then close the program
@@ -27,16 +41,12 @@ from kivy.core.window import Window # Import Window to get window size
 
 Window.clearcolor = ((.2*.75), (.72*.75) ,(.80*.75) ,1) # Colour of the window
 
-global stopped 
+global stopped, MODEL_NAME, MODEL_FILE, DOWNLOAD_BASE, PATH_TO_CKPT, PATH_TO_LABELS, NUM_CLASSES, label_map, categories, category_index
 stopped = False
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
 global vehicle_close
 vehicle_close = False
->>>>>>> 08af92d... V 1.1.1 - final upload
+
 sys.path.append("..")
 MODEL_NAME = 'ssd_mobilenet_v1_coco_11_06_2017'
 MODEL_FILE = MODEL_NAME + '.tar.gz'
@@ -59,6 +69,7 @@ category_index = label_map_util.create_category_index(categories)
 
 with detection_graph.as_default():
 	with tf.Session(graph=detection_graph) as sess:
+
 		class MainScreen(Screen, FloatLayout, Image):
 			def __init__(self, **kwargs):
 				super(MainScreen, self).__init__(**kwargs)
@@ -84,7 +95,7 @@ with detection_graph.as_default():
 					cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 2)
 				return frame
 
-			def Vehicle_detection(self, image):
+			def Vehicle_detection(image):
 				global vehicle_close
 				image_np = image
 				image_np_expanded = np.expand_dims(image_np, axis=0)
@@ -123,7 +134,6 @@ with detection_graph.as_default():
 									vehicle_close = True
 								else:
 									vehicle_close = False
-									
 				return image_np
 
 			def update(self, dt):
@@ -132,7 +142,7 @@ with detection_graph.as_default():
 				ret, frame = self.capture.read() # reads the cv2 output from the camera
 				if ret: # if a camera is turned on and iscapturing for the current program then the current statement will be true
 					checkFrame = frame.copy()
-					frame = MainScreen.Vehicle_detection(self, frame)
+					frame = MainScreen.Vehicle_detection(frame)
 					#frame = MainScreen.StopSignIdentification(frame)
 					height = int(Window.size[1] * 0.75) # work out the size of the frame that should be displayed relative to the window size
 					aspectRatio = frame.shape[0]/frame.shape[1] # work out the aspect ratio of the frames received in order to work out the correct width of frames
@@ -194,7 +204,7 @@ with detection_graph.as_default():
 				
 				if self.speedUnit.text == "Mph":
 					self.speedUnit.text = ("Kph")
-					print("Speed Units")
+
 				else:
 					self.speedUnit.text = ("Mph")
 				
@@ -202,7 +212,7 @@ with detection_graph.as_default():
 				
 				if self.pedestrians.text == "Off":
 					self.pedestrians.text = ("On")
-					print("Pedestrians")
+
 				else:
 					self.pedestrians.text = ("Off")
 				
@@ -210,11 +220,11 @@ with detection_graph.as_default():
 				
 				if self.distanceUnit.text == "Meters":
 					self.distanceUnit.text = ("Yards")
-					print("Distance Units")
+
 
 				elif self.distanceUnit.text == "Yards":
 					self.distanceUnit.text = ("Feet")
-					print("Distance Units")
+
 
 				else:
 					self.distanceUnit.text = ("Meters")
@@ -223,7 +233,7 @@ with detection_graph.as_default():
 				
 				if self.carDistance.text == "Off":
 					self.carDistance.text = ("On")
-					print("Distance to car")
+
 				else:
 					self.carDistance.text = ("Off")
 				
@@ -231,7 +241,6 @@ with detection_graph.as_default():
 				
 				if self.carSpeed.text == "Off":
 					self.carSpeed.text = ("On")
-					print("Car speed in front")
 				else:
 					self.carSpeed.text = ("Off")
 				
@@ -253,149 +262,6 @@ with detection_graph.as_default():
 				global stopped 
 				stopped = True
 				MainScreen().run()
->>>>>>> 73808c3... V 1.1.0 - Apx distance works
 
-class MainScreen(Screen, FloatLayout, Image):
-	def __init__(self, **kwargs):
-		super(MainScreen, self).__init__(**kwargs)
-		self.capture = cv2.VideoCapture(0) # captures the data from the camera with index 0 (primary)
-		if stopped == False:
-			Clock.schedule_interval(self.update, 1.0 / 60) # <--- If fps change is required/ Also code used for updating the frame
-		else:
-			self.capture.release() # release the camera when program stopped. without this the app will not close
-			print('Camera released\nQuitting')
-			exit(0)
-
-	def StopSignIdentification(gFrame):
-		frame = gFrame
-		haar_cascade = cv2.CascadeClassifier("C:/Users/Dmitrijs/Documents/GitHub/A-level-project/new/classifier/cascade.xml")
-		gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-		signs = haar_cascade.detectMultiScale(gray, scaleFactor = 1.1, minNeighbors = 5)
-		for (x,y,w,h) in signs:
-			cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 2)
-		return frame
-
-	def update(self, dt):
-		checkSize = 10 # the size inpixels of width and height of brightness img
-		# decrease  ^ to increase performance or increase to improve the accuracy
-		ret, frame = self.capture.read() # reads the cv2 output from the camera
-		
-		if ret: # if a camera is turned on and iscapturing for the current program then the current statement will be true
-			checkFrame = frame.copy()
-			frame = MainScreen.StopSignIdentification(frame)
-			height = int(Window.size[1] * 0.75) # work out the size of the frame that should be displayed relative to the window size
-			aspectRatio = frame.shape[0]/frame.shape[1] # work out the aspect ratio of the frames received in order to work out the correct width of frames
-			width = int(height / aspectRatio) # work out the correct relative width of the frame
-			frame = cv2.resize(frame, (width, height)) # resize the received frames to the correct relative size to the window
-			#checkFrame = frame.copy() # copy the array of the frame to the variable
-			calc = 0
-			total = 0
-			checkFrame = cv2.resize(checkFrame, (checkSize, checkSize)) # resizes the brightness image to increase performance
-			buf1 = cv2.flip(frame, 0) # in order to display frames in kivy, they must be converteed to textures
-			# this requires the frame array to be flipped
-			buf = buf1.tostring() # the array has to be convrted into a string in order to be displayed in ther main window
-			image_texture = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr') # a texture (a space where graphics can be displayed) 
-			# has to be created with the data of the frame, in order to have the frame being the correct size displayed
-			image_texture.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte') # save the texture created to the buffer in order to use afterwards in the kv file
-			# by saving texture in the buffer because the buffer is faster access memory in comparison to secondary memory
-			self.texture = image_texture # assign the texture to the main window
-			for row in range(len(checkFrame)):
-				for column in range(len(checkFrame[row])):
-					for pixel in range(len(checkFrame[row][column])):
-						calc += checkFrame[row][column][pixel]
-
-			if int(calc/((checkSize**2)*3)) >=20: # check if the frame received has a brightness of above the certain threshold 
-				self.lbl_d.text = ("")
-				self.lbl_d.background_color = ((.2*.75),(.72*.75),(.8*.75), 1)
-
-			else: # if the frame is too dark then display a warning message
-				self.lbl_d.text = ("Too dark")
-				self.lbl_d.background_color = (1, 0, 0 ,1)
-			
-		else:
-			self.texture = CoreImage("img2.jpg").texture
-			self.lbl_d.text = ("Connection to camera lost!")
-					#### HAS TO BE UPDATED!!!!
-
-	#def StopSignIdentification(gFrame):
-		#haar_cascade = cv2.CascadeClassifier("C:/Users/Dmitrijs/Desktop/A-level-project/stop/classifier/cascade.xml")
-	#	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-	#	signs = haar_cascade.detectMultiScale(gray, scaleFactor = 1.1, minNeighbors = 5)
-	#	for (x,y,w,h) in signs:
-	#		cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 2)
-	#	return frame
-
-	def Cruise_Control_Button(self): # function of the cruise button
-		if self.btn_c.text == "Cruise Control: Off":
-			self.btn_c.text = ("Cruise Control: On")
-		else:
-			self.btn_c.text = ("Cruise Control: Off")
-
-	def Lane_Assist_Button(self): # function of the lane assist button
-		if self.btn_l.text == "Lane Assist : Off":
-			self.btn_l.text = ("Lane Assist : On")
-		else:
-			self.btn_l.text = ("Lane Assist : Off")
-	pass
-
-class SettingsScreen(Screen, FloatLayout): # a class responsible for the settings screen and all the functions within it
-	
-	def Speed_Units(self): # function of the speed unit button
-		
-		if self.speedUnit.text == "Mph":
-			 self.speedUnit.text = ("Kph")
-		else:
-			self.speedUnit.text = ("Mph")
-		
-	def Pedestrians(self):
-		
-		if self.pedestrians.text == "Off":
-			 self.pedestrians.text = ("On")
-		else:
-			self.pedestrians.text = ("Off")
-		
-	def Distance_Units(self):
-		
-		if self.distanceUnit.text == "Meters":
-			 self.distanceUnit.text = ("Yards")
-		elif self.distanceUnit.text == "Yards":
-			self.distanceUnit.text = ("Feet")
-		else:
-			self.distanceUnit.text = ("Meters")
-		
-	def Distance_ToCar(self):
-		
-		if self.carDistance.text == "Off":
-			 self.carDistance.text = ("On")
-		else:
-			self.carDistance.text = ("Off")
-		
-	def Car_Speed(self):
-		
-		if self.carSpeed.text == "Off":
-			 self.carSpeed.text = ("On")
-		else:
-			self.carSpeed.text = ("Off")
-		
-	pass
-
-
-class ScreenManagement(ScreenManager): # a class responsible for the management of the screens
-	pass
-
-
-gui = Builder.load_file('projectfile.kv') # a link between the kv ffile and the py file. 
-
-class MainApp(App):
-	def build(self):
-		return gui #displays the gui form of the program
-	
-	def on_stop(self):
-		print('Quiting and releasing camera')
-		global stopped 
-		stopped = True
-		MainScreen().run()
-
-
-if __name__ == "__main__":
-	MainApp().run() #run the app if not a daughter program
+		if __name__ == "__main__":
+			MainApp().run() #run the app if not a daughter program
