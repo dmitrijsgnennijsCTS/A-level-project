@@ -96,10 +96,14 @@ with detection_graph.as_default():
 				return frame
 
 			def Vehicle_detection(image):
-				global vehicle_close
-				image_np = image
-				image_np_expanded = np.expand_dims(image_np, axis=0)
-				image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
+				global vehicle_close 
+				# get the global variable
+				image_np = image 
+				# rename the imported image
+				image_np_expanded = np.expand_dims(image_np, axis=0) 
+				# adds extra dimension to an array
+				image_tensor = detection_graph.get_tensor_by_name('image_tensor:0') 
+				# assign tensor variables to python variables for simple use
 				# Each box represents a part of the image where a particular object was detected.
 				boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
 				# Each score represent how level of confidence for each of the objects.
@@ -120,18 +124,21 @@ with detection_graph.as_default():
 					category_index,
 					use_normalized_coordinates=True,
 					line_thickness=8)
+				# Identified the objects within the frame and gives them an array of variables with previously identified labels
 				for i,b in enumerate(boxes[0]):
 				#                 car                    bus                  truck
 					if classes[0][i] == 3 or classes[0][i] == 6 or classes[0][i] == 8:
-						if scores[0][i] >= 0.5:
-							mid_x = (boxes[0][i][1]+boxes[0][i][3])/2
-							mid_y = (boxes[0][i][0]+boxes[0][i][2])/2
-							apx_distance = float("{0:.2f}".format(boxes[0][i][3] - boxes[0][i][1]))
+						if scores[0][i] >= 0.5: # check the certainty that the object detected is a vehicle
+							mid_x = (boxes[0][i][1]+boxes[0][i][3])/2 # get the middle x value
+							mid_y = (boxes[0][i][0]+boxes[0][i][2])/2 # get the middle y value
+							apx_distance = float("{0:.2f}".format(boxes[0][i][3] - boxes[0][i][1])) 
+							# work out the approximate distance, this will result in the size the identification box is taking of the frame
 							cv2.putText(image_np, '{}'.format(apx_distance), (int(mid_x*800),int(mid_y*450)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,0,0), 2)
+							# for development purpose display the distance identified.
 
-							if apx_distance >=0.5:
-								if mid_x > 0.35 and mid_x < 0.65:
-									vehicle_close = True
+							if apx_distance >=0.5: # if the identified object is close then
+								if mid_x > 0.35 and mid_x < 0.65: # check if the object is in the path of the user
+									vehicle_close = True # if is set the global variable to true which will trigger a warning message
 								else:
 									vehicle_close = False
 				return image_np
